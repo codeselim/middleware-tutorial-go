@@ -1,9 +1,12 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/codeselim/middleware-tutorial-go/common"
 	"github.com/codeselim/middleware-tutorial-go/connection"
+	"github.com/codeselim/middleware-tutorial-go/contract/usersapi"
+	"github.com/codeselim/middleware-tutorial-go/mapper"
 	"github.com/gorilla/mux"
 	"net/http"
 	"time"
@@ -20,13 +23,13 @@ func NewUsersHandler() UsersHandler {
 }
 
 // handler function has the handler type signature
-func (uh UsersHandler) SayHello (w http.ResponseWriter, r *http.Request) error {
+func (uh UsersHandler) SayHello(w http.ResponseWriter, r *http.Request) error {
 	timeNow := time.Now().Format(time.RFC850)
 	fmt.Fprintf(w, "Hello, now it is the %s", timeNow)
 	return nil
 }
 
-func (uh UsersHandler) GetUsers (w http.ResponseWriter, r *http.Request) error {
+func (uh UsersHandler) GetUsers(w http.ResponseWriter, r *http.Request) error {
 	fmt.Println("Received a get users request")
 	response, err := uh.UserFacade.GetUsers()
 	if err != nil {
@@ -49,7 +52,24 @@ func (uh UsersHandler) GetUserById(w http.ResponseWriter, r *http.Request) error
 		return err
 	}
 
-	w.Write([]byte(response)) //http status code defaults to 200
+	//Parse JSON data
+	data := usersapi.User{}
+	b := []byte(response)
+	err = json.Unmarshal(b, &data)
+	if err != nil {
+		return err
+	}
+
+	//get the domain user object from the remote user object
+	domainUser := mapper.NewUserMapper().GetDomainUser(data)
+
+	//marshal the result and send JSON to the client
+	marshaledResponse, err := json.Marshal(domainUser)
+	if err != nil {
+		return err
+	}
+
+	w.Write([]byte(marshaledResponse)) //http status code defaults to 200
 	return nil
 }
 

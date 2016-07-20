@@ -1,6 +1,14 @@
 #  Middleware example written in goLang (Step-by-Step tutorial)
 
 To install the project `go get github.com/codeselim/middleware-tutorial-go`
+
+## Step 9
+Contracts with external APIs and requests transformation.
+
+At this step, we want our API to return a user resource in a different structure than what is returned from the external API. Thus, the data fetched from the external API is mapped/converted in order to suit our API contract. The implementation is found in the `mapper` package.
+
+`Contracts` between the client and our API and between our API and the external API are in the package `contract`.
+
 ## Step 8
 Refactoring. 
 

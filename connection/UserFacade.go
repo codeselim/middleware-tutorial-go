@@ -1,17 +1,17 @@
 package connection
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"fmt"
 )
 
 const (
 	usersApiUrl = "http://jsonplaceholder.typicode.com/users"
 )
 
-type UserFacade struct {}
+type UserFacade struct{}
 
 func NewUserFacade() UserConnection {
 	return &UserFacade{}
