@@ -2,6 +2,14 @@
 
 To install the project `go get github.com/codeselim/middleware-tutorial-go`
 
+## Step 7
+Centralized error Handling.
+
+Since in the last step we implemented a centralized requests handling, we can now handle all errors in one place and thus having a centralized error handling.
+
+In this step we added `error` return type to our handlers.  `error == nil` signifies that no errors are present (goLang convention)
+All handlers return the error object as is (if present). Then, the HandlerWrapper manages the logic of error handling.
+
 ## Step 6
 Centralized requests handling.
 
