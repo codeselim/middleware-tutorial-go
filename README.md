@@ -1,6 +1,14 @@
 #  Middleware example written in goLang (Step-by-Step tutorial)
 
 To install the project `go get github.com/codeselim/middleware-tutorial-go`
+## Step 8
+Refactoring. 
+
+In this step all connection to the external APIs are extracted from the `handler` package and moved to the connection package.
+
+Furthermore, functions are wrapped in structures and dependencies in properties. In this way, isolating components when testing becomes easier.
+
+Additionally, the `connection` package defines interfaces. All the implementations in the `connection` packages respect those interfaces and thus, mocking the handlers dependencies is now possible.
 
 ## Step 7
 Centralized error Handling.

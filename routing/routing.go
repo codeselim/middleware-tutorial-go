@@ -6,10 +6,11 @@ import (
 )
 
 func NewRouter() *mux.Router {
+	usersHandler := handler.NewUsersHandler()
 	r := mux.NewRouter()
-	r.Handle("/", handler.NewHandlerWrapper(handler.SayHello))
-	r.Handle("/users", handler.NewHandlerWrapper(handler.GetUsers))
-	r.Handle("/users/", handler.NewHandlerWrapper(handler.GetUserById))
-	r.Handle("/users/{Id}", handler.NewHandlerWrapper(handler.GetUserById))
+	r.Handle("/", handler.NewHandlerWrapper(usersHandler.SayHello))
+	r.Handle("/users", handler.NewHandlerWrapper(usersHandler.GetUsers))
+	r.Handle("/users/", handler.NewHandlerWrapper(usersHandler.GetUserById))
+	r.Handle("/users/{Id}", handler.NewHandlerWrapper(usersHandler.GetUserById))
 	return r
 }
