@@ -3,20 +3,14 @@
 To install the project `go get github.com/codeselim/middleware-tutorial-go`
 
 ## Step 6
-<<<<<<< HEAD
-Centralized requests handling
-In order to improve our architecture we wrapped all handlers / handler functions in a `HandlerWrapper`.
-The HandlerWrapper will be the unique entry point to execute handler Functions.
-In order to have a `Handler` type we need to implement the Handler interface. In other words, our type (HandlerWrapper) must implement a method with signature `ServeHTTP(res http.ResponseWriter, req *http.Request)`
-=======
 Centralized requests handling.
+
 In order to improve our architecture we wrapped all handlers / handler functions in a `HandlerWrapper`.
 
 The HandlerWrapper will be the unique entry point to execute handler Functions.
 
 In order to have a `Handler` type we need to implement the Handler interface. In other words, our type (HandlerWrapper) must implement a method with signature `ServeHTTP(res http.ResponseWriter, req *http.Request)`
 
->>>>>>> Centralised requests handling
 The routing/routing.go file was adapted in order to receive handler type instead of Handler Functions
 
 ## Step 5
