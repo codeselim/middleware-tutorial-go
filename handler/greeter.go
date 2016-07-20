@@ -2,15 +2,16 @@ package handler
 
 import (
 	"fmt"
+	"github.com/codeselim/middleware-tutorial-go/common"
+	"github.com/gorilla/mux"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
-	"log"
-	"io/ioutil"
-	"github.com/gorilla/mux"
 )
 
 const (
-	usersApiUrl = "http://jsonplaceholder.tyffpicode.com/users"
+	usersApiUrl = "http://jsonplaceholder.typicode.com/users"
 )
 
 // handler function has the handler type signature
@@ -29,9 +30,15 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Received a get users by id request")
 	vars := mux.Vars(r)
 	userId := vars["Id"]
-	requestUrl := fmt.Sprintf("%s/%s", usersApiUrl, userId)
-	response, _ := getUsers(requestUrl)
-	w.Write([]byte(response)) //http status code defaults to 200
+	if len(userId) > 0 {
+		requestUrl := fmt.Sprintf("%s/%s", usersApiUrl, userId)
+		response, _ := getUsers(requestUrl)
+		w.Write([]byte(response)) //http status code defaults to 200
+	} else {
+		err := common.BadRequest("Bad request", "The Id of the user should be supplied") // custom errors
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error())) //http status code defaults to 200
+	}
 }
 
 func getUsers(requestUrl string) (string, error) {

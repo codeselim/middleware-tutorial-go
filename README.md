@@ -1,6 +1,14 @@
 #  Middleware example written in goLang (Step-by-Step tutorial)
 
 To install the project `go get github.com/codeselim/middleware-tutorial-go`
+## Step 5
+In this step, we create our custom errors. 
+
+In order to create our own custom errors, with custom structures, our error-types must implement the go `error` interface.
+Any go type that implements a method with signature `"Error() string"` respects the `error` interface and thus, can be used as type `error`
+ref. https://blog.golang.org/error-handling-and-go 
+
+A 'user id' validation in the `GetUserById` method in `handler/greeter.go` is added in order to demonstrate the usage of our custom errors. 
 
 ## Step 4
 In this step, we connect our middleware application to an external API `http://jsonplaceholder.typicode.com/users`

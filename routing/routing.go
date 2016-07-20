@@ -9,7 +9,7 @@ func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/", handler.SayHello)
 	r.HandleFunc("/users", handler.GetUsers)
-	r.HandleFunc("/users/", handler.GetUsers)
+	r.HandleFunc("/users/", handler.GetUserById)
 	r.HandleFunc("/users/{Id}", handler.GetUserById)
 	return r
 }
