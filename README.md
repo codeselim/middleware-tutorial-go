@@ -1,7 +1,22 @@
-#  Middleware example written in goLang (Step-by-Step tutorial)
+#  Middleware example written in goLang 
+## (Step-by-Step tutorial)
 
 To install the project `go get github.com/codeselim/middleware-tutorial-go`
 
+## Step 10
+Testing a Handler.
+
+Our code restructuring (step8) and the usage of composition and interfaces allows to test our handlers easily.
+
+However, additional code refactoring was needed in order to test the user handler in total isolation. 
+
+The `users.go` handler takes now the `mapper/usermapper.go` on construction time, thus we have the ability to inject its mock while testing.
+ 
+The mapper also respects an interface which will allow us to mock it.
+
+Finally, the handler functions signature was extended to support a new argument (the mux router vars). Else, the routing will not be able to detect "path parameters" (this issue is related to the gorilla/mux package and not to testing).
+
+ 
 ## Step 9
 Contracts with external APIs and requests transformation.
 

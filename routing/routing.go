@@ -1,12 +1,16 @@
 package routing
 
 import (
+	"github.com/codeselim/middleware-tutorial-go/connection"
 	"github.com/codeselim/middleware-tutorial-go/handler"
+	"github.com/codeselim/middleware-tutorial-go/mapper"
 	"github.com/gorilla/mux"
 )
 
 func NewRouter() *mux.Router {
-	usersHandler := handler.NewUsersHandler()
+	connection := connection.NewUserFacade()
+	mapper := mapper.NewUserMapper()
+	usersHandler := handler.NewUsersHandler(connection, mapper)
 	r := mux.NewRouter()
 	r.Handle("/", handler.NewHandlerWrapper(usersHandler.SayHello))
 	r.Handle("/users", handler.NewHandlerWrapper(usersHandler.GetUsers))

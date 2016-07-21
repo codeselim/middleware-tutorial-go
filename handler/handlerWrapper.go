@@ -2,10 +2,11 @@ package handler
 
 import (
 	"github.com/codeselim/middleware-tutorial-go/common"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
-type HandlerWrapperFunc func(w http.ResponseWriter, r *http.Request) error
+type HandlerWrapperFunc func(w http.ResponseWriter, r *http.Request, vars map[string]string) error
 type HandlerWrapper struct {
 	// Customize your HandlerWrapper, add any need property...
 	//Error error
@@ -21,8 +22,9 @@ func NewHandlerWrapper(h HandlerWrapperFunc) HandlerWrapper {
 
 // ServeHTTP allows our HandlerWrapper type to satisfy http.Handler.
 func (hw HandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
 	//execute the wrapped handler
-	err := hw.Handler(w, r)
+	err := hw.Handler(w, r, vars)
 
 	if err != nil {
 		var statusCode int

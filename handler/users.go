@@ -7,29 +7,30 @@ import (
 	"github.com/codeselim/middleware-tutorial-go/connection"
 	"github.com/codeselim/middleware-tutorial-go/contract/usersapi"
 	"github.com/codeselim/middleware-tutorial-go/mapper"
-	"github.com/gorilla/mux"
 	"net/http"
 	"time"
 )
 
 type UsersHandler struct {
 	UserFacade connection.UserConnection
+	UserMapper mapper.User
 }
 
-func NewUsersHandler() UsersHandler {
+func NewUsersHandler(uf connection.UserConnection, um mapper.User) UsersHandler {
 	return UsersHandler{
-		UserFacade: connection.NewUserFacade(),
+		UserFacade: uf,
+		UserMapper: um,
 	}
 }
 
 // handler function has the handler type signature
-func (uh UsersHandler) SayHello(w http.ResponseWriter, r *http.Request) error {
+func (uh UsersHandler) SayHello(w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 	timeNow := time.Now().Format(time.RFC850)
 	fmt.Fprintf(w, "Hello, now it is the %s", timeNow)
 	return nil
 }
 
-func (uh UsersHandler) GetUsers(w http.ResponseWriter, r *http.Request) error {
+func (uh UsersHandler) GetUsers(w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 	fmt.Println("Received a get users request")
 	response, err := uh.UserFacade.GetUsers()
 	if err != nil {
@@ -39,10 +40,10 @@ func (uh UsersHandler) GetUsers(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func (uh UsersHandler) GetUserById(w http.ResponseWriter, r *http.Request) error {
+func (uh UsersHandler) GetUserById(w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 	fmt.Println("Received a get users by id request")
 
-	userId, err := getValidId(r)
+	userId, err := getValidId(vars)
 	if err != nil {
 		return err
 	}
@@ -61,7 +62,7 @@ func (uh UsersHandler) GetUserById(w http.ResponseWriter, r *http.Request) error
 	}
 
 	//get the domain user object from the remote user object
-	domainUser := mapper.NewUserMapper().GetDomainUser(data)
+	domainUser := mapper.NewUserMapper().GetDomainUser(data, "DATA-FROM-DB")
 
 	//marshal the result and send JSON to the client
 	marshaledResponse, err := json.Marshal(domainUser)
@@ -73,12 +74,11 @@ func (uh UsersHandler) GetUserById(w http.ResponseWriter, r *http.Request) error
 	return nil
 }
 
-func getValidId(r *http.Request) (string, error) {
-	vars := mux.Vars(r)
+func getValidId(vars map[string]string) (string, error) {
 	userId := vars["Id"]
 	userIdPresent := len(userId) > 0
 	if !userIdPresent {
-		return "", common.BadRequest("Bad request", "The Id of the user should be supplied") // custom errors
+		return "", common.BadRequest(http.StatusText(400), common.UserIdMissing) // custom errors
 	}
 	return userId, nil
 }
