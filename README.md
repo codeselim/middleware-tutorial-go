@@ -3,6 +3,10 @@
 
 To install the project `go get github.com/codeselim/middleware-tutorial-go`
 
+Every step in this tutorial is presented with a tagged commit. To switch between steps use:
+
+`$ git checkout tags/<tag_name>` (e.g. git checkout tags/Step-4)
+
 ## Step 10
 Testing a Handler.
 
