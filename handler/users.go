@@ -40,6 +40,15 @@ func (uh UsersHandler) GetUsers(w http.ResponseWriter, r *http.Request, vars map
 	return nil
 }
 
+func (uh UsersHandler) GetUsersWithPhotos(w http.ResponseWriter, r *http.Request, vars map[string]string) error {
+	response, err := uh.UserFacade.GetUserWithPhotos()
+	if err != nil {
+		return err
+	}
+	w.Write([]byte(response)) //http status code defaults to 200
+	return nil
+}
+
 func (uh UsersHandler) GetUserById(w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 	fmt.Println("Received a get users by id request")
 

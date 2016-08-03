@@ -13,6 +13,7 @@ func NewRouter() *mux.Router {
 	usersHandler := handler.NewUsersHandler(connection, mapper)
 	r := mux.NewRouter()
 	r.Handle("/", handler.NewHandlerWrapper(usersHandler.SayHello))
+	r.Handle("/usersWithStations", handler.NewHandlerWrapper(usersHandler.GetUsersWithPhotos))
 	r.Handle("/users", handler.NewHandlerWrapper(usersHandler.GetUsers))
 	r.Handle("/users/", handler.NewHandlerWrapper(usersHandler.GetUserById))
 	r.Handle("/users/{Id}", handler.NewHandlerWrapper(usersHandler.GetUserById))
